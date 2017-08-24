@@ -123,11 +123,17 @@ class IZGestureLock: UIControl {
         fingerPoint = nil
         draw()
         if (didFinishDrawing != nil) {
-            let tags: [Int]? = (throughPoints as NSArray).value(forKeyPath: "tag") as? [Int]
-            var pwd = String()
-            for obj in tags! {
-                pwd.append(String(obj))
-            }
+            guard let tags: [Int] = (throughPoints as NSArray).value(forKeyPath: "tag") as? [Int] else { return }
+//            let password = tags.reduce("", { (stringResult: String, element: Int) -> String in
+//                return stringResult.appending(String(element))
+//            })
+            let pwd = tags.reduce("", {
+                $0 + String($1)
+            })
+//            var pwd = String()
+//            for obj in tags! {
+//                pwd.append(String(obj))
+//            }
             didFinishDrawing!(self, pwd)
         }
     }
